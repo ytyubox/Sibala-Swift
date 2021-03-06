@@ -102,8 +102,15 @@ enum Category: Comparable,CustomStringConvertible {
                            dominator: filterGroup.keys.max()!
             )
         } else if group.count == 2 {
-            let max = group.keys.max()!
-            self = .normal(point: max  * 2, dominator: max)
+            if group.allSatisfy({ (k,v) -> Bool in
+                v.count == 2
+            }) {
+                let max = group.keys.max()!
+                self = .normal(point: max  * 2, dominator: max)
+            }
+            else {
+                self = .noPoint
+            }
         } else {
             fatalError("dices case not define:\(dices)")
         }
@@ -199,6 +206,12 @@ final class SibalaTests: XCTestCase {
         let sut = makeSUT(input: "Amy: 6 6 3 4  Lin:2 2 1 6")
 
         XCTAssertEqual(sut, "Lin wins. normal point: 7")
+    }
+    func test_BothNoPointSinceItAllHaveTheSameNumber3Times() {
+        let sut = makeSUT(input: "Amy: 3 3 3 4  Lin:2 2 2 6")
+
+        XCTAssertEqual(sut, "Tie.")
+        
     }
 
     func test_resultIsPrefixWithWinnerName() {
