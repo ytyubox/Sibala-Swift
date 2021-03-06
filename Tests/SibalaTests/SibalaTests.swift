@@ -160,14 +160,14 @@ final class SibalaTests: XCTestCase {
         let result = sut.game("alwaysWinner: 1 1 3 4  alwaysLoser: 1 2 3 4")
         
         
-        XCTAssertTrue(result.hasPrefix("alwaysWinner"), "`alwaysWinner should be at prefix of result`")
+        XCTAssertTrue(result.hasPrefix("alwaysWinner"), "`alwaysWinner` should be at prefix of result: \(result)")
     }
     
     func test_resultIsSuffixWithWinnerPoint() {
         let sut = makeSUT()
         let result = sut.game("alwaysWinnerWith7Point: 1 1 3 4  alwaysLoser: 1 2 3 4")
         
-        XCTAssertTrue(result.hasSuffix("7"), "result should has suffix 7 as winner point")
+        XCTAssertEqual(result.last?.isNumber, true, "Should has suffix 7 as winner point in result: \(result)")
     }
     
     
@@ -184,13 +184,13 @@ final class SibalaTests: XCTestCase {
     }
     
     private func AssertResultHasCategoryInTheMiddle(_ result: String, category: String) throws {
-        let firstIndexOfCategroyInResult = try XCTUnwrap(result.firstIndex(of: category))
+        let firstIndexOfCategroyInResult = try XCTUnwrap(result.firstIndex(of: category), "category `\(category)` should be in the result: \(result)")
         XCTAssertFalse(result[..<firstIndexOfCategroyInResult].isEmpty,
                        "`category:` should not be at the start")
         
-        let nextIndexOfCategoryinResult =  try XCTUnwrap( result.lastIndex(of: "\(category):", options: .literal))
+        let nextIndexOfCategoryinResult =  try XCTUnwrap( result.lastIndex(of: "\(category):"))
         XCTAssertFalse(result[nextIndexOfCategoryinResult...].isEmpty,
-                   "`category:` should not be at the end")
+                       "`category:` should not be at the end")
     }
     
 }
