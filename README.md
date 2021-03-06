@@ -26,6 +26,9 @@
     - 若玩家們同時有多個相同點數，以點數合中單顆最大的爲勝。
     - 若經過上面規則玩家點數仍相同，則和局。
 
+## 測試案例：
+[SibalaTests.swift](Tests/SibalaTests/SibalaTests.swift)
+
 ## 範例：
 ### 範例 1  
 
