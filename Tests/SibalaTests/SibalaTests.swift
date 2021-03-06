@@ -9,7 +9,7 @@ class Sibala {
         }
         let winner = input.components(separatedBy: ":").first ?? ""
         
-        return "\(winner) wins. with any category point: any point"
+        return "\(winner) wins. with any category point: 7"
     }
 }
 
@@ -29,6 +29,13 @@ final class SibalaTests: XCTestCase {
         
         
         XCTAssertTrue(result.hasPrefix("alwaysWinner"), "`alwaysWinner should be at prefix of result`")
+    }
+    
+    func test_resultIsSuffixWithWinnerPoint() {
+        let sut = makeSUT()
+        let result = sut.game("alwaysWinnerWith7Point: 1 1 3 4  alwaysLoser: 1 2 3 4")
+        
+        XCTAssertTrue(result.hasSuffix("7"), "result should has suffix 7 as winner point")
     }
     // MARK: - helper
     func makeSUT() -> Sibala {
