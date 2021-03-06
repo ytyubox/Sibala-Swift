@@ -179,6 +179,18 @@ final class SibalaTests: XCTestCase {
         XCTAssertEqual(sut, "Lin wins. normal point: 6")
     }
     
+    func test_AmyWinWhenItsCateroyIsAllButTheOtherIsNormal() {
+        let sut = makeSUT(input: "Amy: 3 3 3 3  Lin:1 1 2 2")
+        
+        XCTAssertEqual(sut, "Amy wins. all the same kind: 3")
+    }
+    
+    func test_LinWinWhenItsCateroyIsAllButTheOtherIsNormal() {
+        let sut = makeSUT(input: "Amy: 2 2 1 1  Lin:3 3 3 3")
+
+        XCTAssertEqual(sut, "Lin wins. all the same kind: 3")
+    }
+    
     func test_resultIsPrefixWithWinnerName() {
         let sut = makeSUT(input: "alwaysWinner: 1 1 3 4  alwaysLoser: 1 2 3 4")
         
