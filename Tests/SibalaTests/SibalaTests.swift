@@ -21,21 +21,21 @@ class Sibala {
         case winner.category == player.categroy:
             return NullWinner()
         case winner.category < player.categroy:
-            return Winner(winnerName: player.name, point: player.categroy.getValue(), category: player.categroy)
+            return Winner(
+                winnerName: player.name, 
+                category: player.categroy)
         default: return winner
         }
     }
 }
 class Winner: CustomStringConvertible {
-    internal init(winnerName: String?, point: Int?, category: Category) {
+    internal init(winnerName: String?, category: Category) {
         self.winnerName = winnerName
-        self.point = point
         self.category = category
     }
     
     
     let winnerName: String?
-    let point: Int?
     let category: Category
     var description: String {
         "\(winnerName!) wins. \(category.description)"
@@ -43,7 +43,7 @@ class Winner: CustomStringConvertible {
 }
 class NullWinner: Winner {
     convenience init() {
-        self.init(winnerName:nil, point: nil, category: .noPoint)
+        self.init(winnerName:nil, category: .noPoint)
     }
     override var description: String {"Tie."}
 }
@@ -60,6 +60,7 @@ struct Player:Comparable {
     internal init<S>(name: S, dices: Dices) where S: StringProtocol {
         self.name = name.description
         self.dices = dices
+        self.categroy = Category(dices: dices)
     }
     init(APlayerString input: String) {
         let splited = input.split(separator: ":")
@@ -69,9 +70,8 @@ struct Player:Comparable {
     
     let name: String
     let dices: Dices
-    var categroy: Category {
-        Category(dices: dices)
-    }
+    let categroy: Category
+    
 }
 struct Dices {
     internal init(values: [Int]) {
@@ -95,12 +95,15 @@ enum Category: Comparable,CustomStringConvertible {
         } else if group.count == 1 {
             self = .allTheSameKind(maxValue: dices.values.first!)
         } else if group.count == 3 {
-            self = .normal(point: group
-                            .filter({k,v in v.count == 1})
-                            .reduce(0) {$0 + $1.key}
+            let filterGroup =  group
+                .filter({k,v in v.count == 1})
+            self = .normal(point: filterGroup
+                            .reduce(0) {$0 + $1.key},
+                           dominator: filterGroup.keys.max()!
             )
         } else if group.count == 2 {
-            self = .normal(point: group.keys.max()! * 2)
+            let max = group.keys.max()!
+            self = .normal(point: max  * 2, dominator: max)
         } else {
             fatalError("dices case not define:\(dices)")
         }
@@ -108,7 +111,7 @@ enum Category: Comparable,CustomStringConvertible {
     
     
     case noPoint
-    case normal(point:Int)
+    case normal(point:Int, dominator: Int)
     case allTheSameKind(maxValue: Int)
     
     func isLess(than other: Category) -> Bool {
@@ -120,29 +123,24 @@ enum Category: Comparable,CustomStringConvertible {
         case (.normal, .allTheSameKind): return false
         case (.allTheSameKind, .noPoint): return true
         case (.allTheSameKind, .normal): return true
-        case let ( .normal(point: lhs), .normal(point: rhs)): return lhs < rhs
         case let ( .allTheSameKind(maxValue: lhs), .allTheSameKind(maxValue:  rhs)): return lhs < rhs
             
+            
+        case (.normal(point: let pointlhs, dominator: let dominatorlhs), .normal(point: let pointrhs, dominator: let dominatorrhs)):
+            if pointlhs == pointrhs {
+                return dominatorlhs < dominatorrhs
+            }
+            return pointlhs < pointrhs
         }
     }
     var description: String {
         switch self {
         case .noPoint:
             return ""
-        case .normal(point: let point):
-            return "normal point: \(point)"
         case .allTheSameKind(maxValue: let maxValue):
             return "all the same kind: \(maxValue)"
-        }
-    }
-    func getValue() -> Int {
-        switch self {
-        case .noPoint:
-            fatalError("no point have no value")
-        case .normal(point: let point):
-            return point
-        case .allTheSameKind(maxValue: let maxValue):
-            return maxValue
+        case .normal(point: let point, dominator: _):
+            return "normal point: \(point)"
         }
     }
 }
@@ -190,7 +188,19 @@ final class SibalaTests: XCTestCase {
 
         XCTAssertEqual(sut, "Lin wins. all the same kind: 3")
     }
+
+    func test_AmyWinWhenBothNomalWithSamePointButBiggerValue() {
+        let sut = makeSUT(input: "Amy: 2 2 1 6  Lin:6 6 3 4")
+        
+        XCTAssertEqual(sut, "Amy wins. normal point: 7")
+    }
     
+    func test_LinWinWhenBothNomalWithSamePointButBiggerValue() {
+        let sut = makeSUT(input: "Amy: 6 6 3 4  Lin:2 2 1 6")
+
+        XCTAssertEqual(sut, "Lin wins. normal point: 7")
+    }
+
     func test_resultIsPrefixWithWinnerName() {
         let sut = makeSUT(input: "alwaysWinner: 1 1 3 4  alwaysLoser: 1 2 3 4")
         
