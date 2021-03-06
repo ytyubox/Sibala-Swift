@@ -10,14 +10,14 @@
 
 import Foundation
 class Winner: CustomStringConvertible {
-    init(winnerName: String?, category: Category) {
+    init(winnerName: String?, category: Player.Category) {
         self.winnerName = winnerName
         self.category = category
     }
     
     
     let winnerName: String?
-    let category: Category
+    let category: Player.Category
     var description: String {
         "\(winnerName!) wins. \(category.description)"
     }
