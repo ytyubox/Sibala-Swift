@@ -101,6 +101,7 @@ final class SibalaTests: XCTestCase {
 }
 
 
+/// source from: Index of a substring in a string with Swift - stackoverflow:  https://stackoverflow.com/a/32306142
 private extension StringProtocol {
     func firstIndex<S: StringProtocol>(of string: S, options: String.CompareOptions = []) -> Index? {
         range(of: string, options: options)?.lowerBound
