@@ -148,52 +148,47 @@ enum Category: Comparable,CustomStringConvertible {
 final class SibalaTests: XCTestCase {
     
     func test_TiewhenBothNoPoint() {
-        let sut = makeSUT()
+        let sut = makeSUT(input: "testwinner: 1 2 3 4  testloser: 1 2 3 4")
         
-        let result = sut.game("testwinner: 1 2 3 4  testloser: 1 2 3 4")
-        
-        XCTAssertEqual(result, "Tie.")
+        XCTAssertEqual(sut, "Tie.")
     }
     
     func test_AmyWinWhenBothNormal() {
-        let sut = makeSUT()
-        let result = sut.game("Amy: 2 2 4 1  Lin:3 3 2 1")
+        let sut = makeSUT(input: "Amy: 2 2 4 1  Lin:3 3 2 1")
         
-        XCTAssertEqual(result, "Amy wins. normal point: 5")
-    }
-    func test_LinWinWhenBothNormal() {
-        let sut = makeSUT()
-        let result = sut.game("Amy:3 3 2 1  Lin:2 2 4 1")
-        
-        XCTAssertEqual(result, "Lin wins. normal point: 5")
+        XCTAssertEqual(sut, "Amy wins. normal point: 5")
     }
     
+    func test_LinWinWhenBothNormal() {
+        let sut = makeSUT(input: "Amy:3 3 2 1  Lin:2 2 4 1")
+        
+        XCTAssertEqual(sut, "Lin wins. normal point: 5")
+    }
+    
+
     func test_resultIsPrefixWithWinnerName() {
-        let sut = makeSUT()
-        let result = sut.game("alwaysWinner: 1 1 3 4  alwaysLoser: 1 2 3 4")
+        let sut = makeSUT(input: "alwaysWinner: 1 1 3 4  alwaysLoser: 1 2 3 4")
         
         
-        XCTAssertTrue(result.hasPrefix("alwaysWinner"), "`alwaysWinner` should be at prefix of result: \(result)")
+        XCTAssertTrue(sut.hasPrefix("alwaysWinner"), "`alwaysWinner` should be at prefix of result: \(sut)")
     }
     
     func test_resultIsSuffixWithWinnerPoint() {
-        let sut = makeSUT()
-        let result = sut.game("alwaysWinnerWith7Point: 1 1 3 4  alwaysLoser: 1 2 3 4")
+        let sut = makeSUT(input:"alwaysWinnerWith7Point: 1 1 3 4  alwaysLoser: 1 2 3 4")
         
-        XCTAssertEqual(result.last?.isNumber, true, "Should has suffix 7 as winner point in result: \(result)")
+        XCTAssertEqual(sut.last?.isNumber, true, "Should has suffix 7 as winner point in result: \(sut)")
     }
     
     
     func test_resultHaswinnerCategoryInTheMiddle() throws {
-        let sut = makeSUT()
-        let result = sut.game("alwaysWinnerWithNormalPoint: 1 1 3 4  alwaysLoser: 1 2 3 4")
-        XCTAssertTrue(result.contains("normal point:"), "Should contain winner category in result: \(result)")
-        try AssertResultHasCategoryInTheMiddle(result, category: "normal point")
+        let sut = makeSUT(input: "alwaysWinnerWithNormalPoint: 1 1 3 4  alwaysLoser: 1 2 3 4")
+        XCTAssertTrue(sut.contains("normal point:"), "Should contain winner category in result: \(sut)")
+        try AssertResultHasCategoryInTheMiddle(sut, category: "normal point")
     }
     
     // MARK: - helper
-    private func makeSUT() -> Sibala {
-        return Sibala()
+    private func makeSUT(input: String) -> String {
+        return Sibala().game(input)
     }
     
     private func AssertResultHasCategoryInTheMiddle(_ result: String, category: String) throws {
