@@ -99,7 +99,9 @@ enum Category: Comparable,CustomStringConvertible {
                             .filter({k,v in v.count == 1})
                             .reduce(0) {$0 + $1.key}
             )
-        }else {
+        } else if group.count == 2 {
+            self = .normal(point: group.keys.max()! * 2)
+        } else {
             fatalError("dices case not define:\(dices)")
         }
     }
@@ -165,7 +167,18 @@ final class SibalaTests: XCTestCase {
         XCTAssertEqual(sut, "Lin wins. normal point: 5")
     }
     
+    func test_AmyWinWhenBothNormalWithTwoPair() {
+        let sut = makeSUT(input: "Amy: 2 2 3 3  Lin:1 1 2 2")
+        
+        XCTAssertEqual(sut, "Amy wins. normal point: 6")
+    }
+    
+    func test_LinWinWhenBothNormalWthTwoPair() {
+        let sut = makeSUT(input: "Amy: 2 2 1 1  Lin:3 3 2 2")
 
+        XCTAssertEqual(sut, "Lin wins. normal point: 6")
+    }
+    
     func test_resultIsPrefixWithWinnerName() {
         let sut = makeSUT(input: "alwaysWinner: 1 1 3 4  alwaysLoser: 1 2 3 4")
         
