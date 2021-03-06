@@ -161,6 +161,12 @@ final class SibalaTests: XCTestCase {
         
         XCTAssertEqual(result, "Amy wins. normal point: 5")
     }
+    func test_LinWinWhenBothNormal() {
+        let sut = makeSUT()
+        let result = sut.game("Amy:3 3 2 1  Lin:2 2 4 1")
+        
+        XCTAssertEqual(result, "Lin wins. normal point: 5")
+    }
     
     func test_resultIsPrefixWithWinnerName() {
         let sut = makeSUT()
