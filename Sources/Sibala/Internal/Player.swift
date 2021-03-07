@@ -11,7 +11,7 @@
 import Foundation
  struct Player:Comparable {
      static func < (lhs: Player, rhs: Player) -> Bool {
-        lhs.categroy.isLess(than: rhs.categroy)
+        lhs.categroy < rhs.categroy
     }
     
      static func == (lhs: Player, rhs: Player) -> Bool {
@@ -46,7 +46,8 @@ import Foundation
         }
         let values:[Int]
     }
-    enum Category: Comparable,CustomStringConvertible {
+    
+    enum Category{
         init(dices: Dices) {
             let group = Dictionary(grouping: dices.values, by: {$0})
             if group.count == dices.values.count {
@@ -80,35 +81,20 @@ import Foundation
         case normal(point:Int, dominator: Int)
         case allTheSameKind(maxValue: Int)
         
-        func isLess(than other: Category) -> Bool {
-            switch (self, other) {
-            case (.noPoint, .noPoint): return false
-            case (.noPoint, .normal): return false
-            case (.noPoint, .allTheSameKind): return false
-            case (.normal, .noPoint): return true
-            case (.normal, .allTheSameKind): return false
-            case (.allTheSameKind, .noPoint): return true
-            case (.allTheSameKind, .normal): return true
-            case let ( .allTheSameKind(maxValue: lhs), .allTheSameKind(maxValue:  rhs)): return lhs < rhs
-                
-                
-            case (.normal(point: let pointlhs, dominator: let dominatorlhs), .normal(point: let pointrhs, dominator: let dominatorrhs)):
-                if pointlhs == pointrhs {
-                    return dominatorlhs < dominatorrhs
-                }
-                return pointlhs < pointrhs
-            }
-        }
-        var description: String {
-            switch self {
-            case .noPoint:
-                return ""
-            case .allTheSameKind(maxValue: let maxValue):
-                return "all the same kind: \(maxValue)"
-            case .normal(point: let point, dominator: _):
-                return "normal point: \(point)"
-            }
-        }
     }
 }
+extension Player.Category: Comparable { }
 
+extension Player.Category:CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .noPoint:
+            return "its a no point, not a winner"
+        case .allTheSameKind(maxValue: let maxValue):
+            return "all the same kind: \(maxValue)"
+        case .normal(point: let point, dominator: _):
+            return "normal point: \(point)"
+        }
+    }
+    
+}
