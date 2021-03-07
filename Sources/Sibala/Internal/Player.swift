@@ -17,7 +17,7 @@ struct Player {
     }
 
     init<S>(name: S, dices: Dices) where S: StringProtocol {
-        self.init(name: name, category: CategroyFactory(dices: dices))
+        self.init(name: name, category: categroyFactory(dices: dices))
     }
 
     public init(APlayerString input: GameParser.AplayerInputStructure) {
