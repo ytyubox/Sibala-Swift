@@ -35,7 +35,7 @@ struct Dices {
     }
 
     init<S>(input: S) where S: StringProtocol {
-        let list = input.compactMap{
+        let list = input.compactMap {
             Int($0.description)
         }
         assert(list.count == 4)
