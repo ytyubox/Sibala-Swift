@@ -11,10 +11,13 @@ import Foundation
 struct Player {
     let name: String
     let categroy: Category
+    init<S>(name: S, category: Category) where S: StringProtocol {
+        self.name = name.description
+        categroy = category
+    }
 
     init<S>(name: S, dices: Dices) where S: StringProtocol {
-        self.name = name.description
-        categroy = CategroyFactory(dices: dices)
+        self.init(name: name, category: CategroyFactory(dices: dices))
     }
 
     public init(APlayerString input: GameParser.AplayerInputStructure) {

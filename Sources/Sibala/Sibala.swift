@@ -4,27 +4,11 @@ public enum Sibala {
             GameParser
             .getPlayersStringStructure(gameInput: input)
             .map(Player.init(APlayerString:))
-        let winner = computeForWinner(players: players)
-        return winner.description
+        let winner = computeWhichPlayerWin(players: players)
+        return winner.toWinner.description
     }
 
-    private static func computeForWinner(players: [Player]) -> Winner {
-        players.reduce(NullWinner()) {
-            lastWinner, nextPlayer in
-            compare(winner: lastWinner, player: nextPlayer)
-        }
-    }
-
-    private static func compare(winner: Winner, player: Player) -> Winner {
-        switch true {
-        case winner.category == player.categroy:
-            return NullWinner()
-        case winner.category < player.categroy:
-            return Winner(
-                winnerName: player.name,
-                category: player.categroy
-            )
-        default: return winner
-        }
+    private static func computeWhichPlayerWin(players: [Player]) -> Player {
+        players.reduce(Player.nullPlayer, max)
     }
 }

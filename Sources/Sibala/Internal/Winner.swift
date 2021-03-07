@@ -8,23 +8,29 @@
  */
 
 import Foundation
+
+extension Player {
+    static let nullPlayer = Player(name: "", category: .noPoint)
+}
+
+extension Player {
+    var toWinner: Winner {
+        Winner(winnerName: name, category: categroy)
+    }
+}
+
 class Winner: CustomStringConvertible {
-    init(winnerName: String?, category: Player.Category) {
+    init(winnerName: String, category: Player.Category) {
         self.winnerName = winnerName
         self.category = category
     }
 
-    let winnerName: String?
+    let winnerName: String
     let category: Player.Category
     var description: String {
-        "\(winnerName!) wins. \(category.description)"
+        if category == .noPoint {
+            return "Tie."
+        }
+        return "\(winnerName) wins. \(category.description)"
     }
-}
-
-class NullWinner: Winner {
-    convenience init() {
-        self.init(winnerName: nil, category: .noPoint)
-    }
-
-    override var description: String { "Tie." }
 }
