@@ -1,16 +1,15 @@
 //
-/* 
+/*
  *		Created by 游宗諭 in 2021/3/7
- *		
+ *
  *		Using Swift 5.0
- *		
+ *
  *		Running on macOS 11.2
  */
 
-
 import Foundation
 typealias Count = Int
-private let setOfDiceCountToFactorys: [Count:_CategoryFactory] =
+private let setOfDiceCountToFactorys: [Count: _CategoryFactory] =
     [
         1: AllTheSameKindFactory(),
         2: NoPointOrNormalFactory(),
@@ -19,7 +18,7 @@ private let setOfDiceCountToFactorys: [Count:_CategoryFactory] =
     ]
 
 func CategroyFactory(dices: Dices) -> Player.Category {
-    let group = Dictionary(grouping: dices.values, by: {$0}).mapValues(\.count)
+    let group = Dictionary(grouping: dices.values, by: { $0 }).mapValues(\.count)
     let factory = setOfDiceCountToFactorys[group.count]!
     return factory.make(group: group)
 }
@@ -30,8 +29,7 @@ private protocol _CategoryFactory {
     func make(group: Group) -> Outpout
 }
 
-
-private struct NoPointFactory:_CategoryFactory {
+private struct NoPointFactory: _CategoryFactory {
     func make(group: Group) -> Outpout {
         assert(group.count == 4)
         return .noPoint
@@ -41,11 +39,10 @@ private struct NoPointFactory:_CategoryFactory {
 private struct NoPointOrNormalFactory: _CategoryFactory {
     func make(group: Group) -> Outpout {
         assert(group.count == 2)
-        if group.allSatisfy({ (k,v) -> Bool in v == 2 }) {
+        if group.allSatisfy({ (_, v) -> Bool in v == 2 }) {
             let max = group.keys.max()!
-            return .normal(point: max  * 2, dominator: max)
-        }
-        else {
+            return .normal(point: max * 2, dominator: max)
+        } else {
             return .noPoint
         }
     }
@@ -54,12 +51,11 @@ private struct NoPointOrNormalFactory: _CategoryFactory {
 private struct NormalPointFactory: _CategoryFactory {
     func make(group: Group) -> Outpout {
         assert(group.count == 3)
-        let filterGroup =  group
-            .filter({k,v in v == 1})
+        let filterGroup = group
+            .filter { _, v in v == 1 }
         return .normal(point: filterGroup
-                        .reduce(0) {$0 + $1.key},
-                       dominator: filterGroup.keys.max()!
-        )
+            .reduce(0) { $0 + $1.key },
+            dominator: filterGroup.keys.max()!)
     }
 }
 

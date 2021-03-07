@@ -7,14 +7,17 @@ let package = Package(
     products: [
         .library(
             name: "Sibala",
-            targets: ["Sibala"]),
+            targets: ["Sibala"]
+        ),
     ],
     targets: [
         .target(
             name: "Sibala",
-            dependencies: []),
+            dependencies: []
+        ),
         .testTarget(
             name: "SibalaTests",
-            dependencies: ["Sibala"]),
+            dependencies: ["Sibala"]
+        ),
     ]
 )
