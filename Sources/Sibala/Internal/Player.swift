@@ -37,7 +37,7 @@ struct Dices {
             .components(separatedBy: " ")
             .compactMap(Int.init)
         assert(list.count == 4)
-        self.init( values: list) 
+        self.init(values: list)
     }
     let values:[Int]
 }

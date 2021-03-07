@@ -10,7 +10,7 @@
 
 import Foundation
 typealias Count = Int
-private let factorys: [Count:_CategoryFactory] =
+private let setOfDiceCountToFactorys: [Count:_CategoryFactory] =
     [
         1: AllTheSameKindFactory(),
         2: NoPointOrNormalFactory(),
@@ -20,7 +20,7 @@ private let factorys: [Count:_CategoryFactory] =
 
 func CategroyFactory(dices: Dices) -> Player.Category {
     let group = Dictionary(grouping: dices.values, by: {$0}).mapValues(\.count)
-    let factory = factorys[group.count]!
+    let factory = setOfDiceCountToFactorys[group.count]!
     return factory.make(group: group)
 }
 
