@@ -3,10 +3,10 @@ public enum Sibala {
         let parsedPlayerStrings = GameParser.getPlayersStringStructure(gameInput: input)
         let players = parsedPlayerStrings.map(Player.init(APlayerString:))
         let winner = computeWhichPlayerWin(players: players)
-        return winner.toWinner.description
+        return winner.description
     }
 
-    private static func computeWhichPlayerWin(players: [Player]) -> Player {
-        players.reduce(Player.nullPlayer, max)
+    private static func computeWhichPlayerWin(players: [Player]) -> Winner {
+        players.reduce(Player.nullPlayer, max).toWinner
     }
 }
