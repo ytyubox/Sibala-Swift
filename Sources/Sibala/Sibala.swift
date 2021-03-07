@@ -1,7 +1,8 @@
 public enum Sibala {
     public static func game(_ input: String) -> String {
-        let players = input
-            .components(separatedBy: "  ")
+        let players =
+            GameParser
+            .getPlayersStringStructure(gameInput: input)
             .map(Player.init(APlayerString:))
         let winner = computeForWinner(players: players)
         return winner.description

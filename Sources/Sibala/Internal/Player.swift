@@ -17,10 +17,8 @@ struct Player {
         categroy = CategroyFactory(dices: dices)
     }
 
-    public init(APlayerString input: String) {
-        let splited = input.split(separator: ":")
-        assert(splited.count == 2)
-        let (name, dicesString) = (splited[0], splited[1])
+    public init(APlayerString input: GameParser.AplayerInputStructure) {
+        let (name, dicesString) = input
         self.init(
             name: name,
             dices: Dices(input: dicesString)
@@ -34,9 +32,9 @@ struct Dices {
     }
 
     init<S>(input: S) where S: StringProtocol {
-        let list = input
-            .components(separatedBy: " ")
-            .compactMap(Int.init)
+        let list = input.compactMap{
+            Int($0.description)
+        }
         assert(list.count == 4)
         self.init(values: list)
     }
