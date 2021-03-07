@@ -18,7 +18,7 @@ private let factorys: [Count:_CategoryFactory] =
         4: NoPointFactory(),
     ]
 
-func CategroyFactory(dices: Player.Dices) -> Player.Category {
+func CategroyFactory(dices: Dices) -> Player.Category {
     let group = Dictionary(grouping: dices.values, by: {$0}).mapValues(\.count)
     let factory = factorys[group.count]!
     return factory.make(group: group)
