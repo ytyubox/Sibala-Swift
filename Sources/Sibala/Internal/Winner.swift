@@ -25,8 +25,8 @@ class Winner: CustomStringConvertible {
         self.category = category
     }
 
-    let winnerName: String
-    let category: Player.Category
+    private let winnerName: String
+    private let category: Player.Category
     var description: String {
         if category == .noPoint {
             return "Tie."

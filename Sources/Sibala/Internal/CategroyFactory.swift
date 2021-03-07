@@ -8,7 +8,6 @@
  */
 
 import Foundation
-typealias Count = Int
 
 func categroyFactory(dices: Dices) -> Player.Category {
     let group = Dictionary(grouping: dices.values, by: { $0 }).mapValues(\.count)
@@ -16,8 +15,9 @@ func categroyFactory(dices: Dices) -> Player.Category {
     return factory(group)
 }
 
-typealias Group = [Int: Int]
-typealias Output = Player.Category
+private typealias Count = Int
+private typealias Group = [Int: Count]
+private typealias Output = Player.Category
 private typealias CategoryFactory = (Group) -> Output
 
 private let setOfDiceCountToFactorys: [Count: CategoryFactory] =

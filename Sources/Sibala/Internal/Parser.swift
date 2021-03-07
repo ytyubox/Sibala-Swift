@@ -12,7 +12,7 @@ enum GameParser {
     private static let KPLAYER_SEPARATOR = "  "
     private static let KPLAYER_NAMESEPARATOR = ":"
     private static let KPLAYER_DICESEPARATOR: Character = " "
-    typealias APlayerInputFormat = String
+    private typealias APlayerInputFormat = String
     typealias AplayerInputStructure = (name: String, dices: String)
     static func getPlayersStringStructure(gameInput input: String) -> [AplayerInputStructure] {
         getPlayersStringArray(fromgameInput: input)

@@ -30,6 +30,8 @@ struct Player {
 }
 
 struct Dices {
+    let values: [Int]
+
     init(values: [Int]) {
         self.values = values
     }
@@ -41,8 +43,6 @@ struct Dices {
         assert(list.count == 4)
         self.init(values: list)
     }
-
-    let values: [Int]
 }
 
 extension Player: Comparable {
